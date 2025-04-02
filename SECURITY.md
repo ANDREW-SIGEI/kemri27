@@ -1,5 +1,9 @@
 # Security Policy
 
+## Repository Status
+
+This is a private repository containing sensitive information for KEMRI. Access is restricted to authorized personnel only.
+
 ## Supported Versions
 
 | Version | Supported          |
@@ -25,6 +29,13 @@ Please include the requested information listed below (as much as you can provid
 * Impact of the issue, including how an attacker might exploit the issue
 
 This information will help us triage your report more quickly.
+
+## Access Control
+
+* This repository is private and access is restricted
+* Only authorized KEMRI personnel may have access
+* External collaborators must be explicitly approved
+* All access changes must be logged and reviewed
 
 ## Preferred Languages
 
