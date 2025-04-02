@@ -1,0 +1,37 @@
+name: Branch Protection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  branch-protection:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check Branch Protection
+        run: |
+          # Check if the branch is main
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "Running main branch protection checks..."
+            
+            # Check if PR is from a fork
+            if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+              echo "PR is from a fork, requiring review"
+            fi
+            
+            # Check if PR has required reviews
+            if [ "${{ github.event.pull_request.review_comments }}" = "0" ]; then
+              echo "PR requires at least one review"
+              exit 1
+            fi
+            
+            # Check if PR has passing checks
+            if [ "${{ github.event.pull_request.statuses_url }}" != "" ]; then
+              echo "Checking PR status..."
+              # Add your status check logic here
+            fi
+          fi 

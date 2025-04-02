@@ -1,0 +1,80 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: |
+        npm ci
+        cd KEMRI
+        npm ci
+        
+    - name: Run TypeScript Check
+      run: |
+        npm run type-check
+        cd KEMRI
+        npm run type-check
+        
+    - name: Run Linting
+      run: |
+        npm run lint
+        cd KEMRI
+        npm run lint
+        
+    - name: Run Tests
+      run: |
+        npm test
+        cd KEMRI
+        npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install Dependencies
+      run: |
+        npm ci
+        cd KEMRI
+        npm ci
+        
+    - name: Build
+      run: |
+        npm run build
+        cd KEMRI
+        npm run build
+        
+    # Add deployment steps here based on your hosting platform
+    # Example for Vercel:
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.ORG_ID}}
+        vercel-project-id: ${{ secrets.PROJECT_ID}}
+        working-directory: ./KEMRI 
