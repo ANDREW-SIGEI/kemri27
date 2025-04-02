@@ -37,3 +37,6 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
+
+# Keep environment variables out of version control
+.env

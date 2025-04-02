@@ -69,4 +69,4 @@ The application will be available at:
 
 ## License
 
-MIT 
+MIT
